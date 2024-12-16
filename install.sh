@@ -14,7 +14,7 @@ else
   arch=$(uname -m)
   if [[ $arch == x86_64* ]]; then
     echo "X64 Architecture"
-    curl -L -H "Authorization: Bearer $BROADCOM_ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos-arm64/1.1.0/application-advisor-cli-macos-arm64-1.1.0.tar
+    curl -L -H "Authorization: Bearer $BROADCOM_ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos/1.1.0/application-advisor-cli-macos-1.1.0.tar
   elif  [[ $arch == arm* ]]; then
     echo "ARM Architecture"
     curl -L -H "Authorization: Bearer $BROADCOM_ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos-arm64/1.1.0/application-advisor-cli-macos-arm64-1.1.0.tar
