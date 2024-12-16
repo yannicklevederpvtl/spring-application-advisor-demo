@@ -6,7 +6,7 @@ Spring Advisor Local Demo including a Spring Application Advisor Server, an Arti
 
 - [Basic Usage](#basic-usage)
 - [Remote Maven Repository Configuration](#remote-maven-repository-configuration)
-
+- [Commands Cheat Sheet](#commands-cheat-sheet)
 
 
 Basic Usage
@@ -61,6 +61,19 @@ Using `admin` as user and `password` as password.
 <br>
 
 ![image description](assets/spring-advisor-demo.svg)
+
+Commands Cheat Sheet
+---------------------
+
+```
+advisor build-config get
+advisor build-config publish
+advisor upgrade-plan get
+advisor upgrade-plan apply
+git diff
+git add -A && git commit -m \"Java 8 to 11\"
+git push
+```
 
 Links
 -------

@@ -132,6 +132,7 @@ if [ "$answer" != "${answer#[Yy]}" ] ;then
     echo "advisor build-config publish"
     echo "advisor upgrade-plan get"
     echo "advisor upgrade-plan apply"
+    echo "git diff"
     echo "git add -A && git commit -m \"Java 8 to 11\""
     echo "git push"
 fi
