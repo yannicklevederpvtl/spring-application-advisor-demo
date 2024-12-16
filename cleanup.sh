@@ -6,6 +6,8 @@ docker volume rm git-repositories
 docker volume rm spring-server
 docker image rm releases-docker.jfrog.io/jfrog/artifactory-oss:7.90.17
 docker image rm eclipse-temurin:latest
+docker image rm postgres:latest
+docker image rm rockstorm/git-server:latest 
 docker system prune
 docker volume prune
 rm advisor

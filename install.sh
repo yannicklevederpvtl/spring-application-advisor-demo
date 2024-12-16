@@ -3,7 +3,7 @@ export ADVISOR_DEMO_HOME=$(echo $(pwd))
 export BROADCOM_ARTIFACTORY_TOKEN
 
 if [ $BROADCOM_ARTIFACTORY_TOKEN = ""] ;then
-  printf "Broadcom Artifactory Access Token)? "
+  printf "Broadcom Artifactory Access Token? "
   read BROADCOM_ARTIFACTORY_TOKEN
 fi
 
