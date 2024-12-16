@@ -14,5 +14,3 @@ rm -rf artifactory
 rm -rf spring-server
 rm -rf spring-petclinic
 rm -r $HOME/.m2/repository
-unalias -a git
-unalias -a advisor
