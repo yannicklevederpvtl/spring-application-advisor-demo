@@ -11,6 +11,9 @@ Spring Advisor Local Demo including a Spring Application Advisor Server, an Arti
 
 Basic Usage
 -----------
+
+Get your Access Token from [Spring Enterprise Subscription](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/tanzu-spring/commercial/spring-tanzu/guide-artifact-repository-administrators.html)
+
 Simply run:
 
 ```
@@ -70,8 +73,9 @@ advisor build-config get
 advisor build-config publish
 advisor upgrade-plan get
 advisor upgrade-plan apply
+advisor build-config get && advisor upgrade-plan apply
 git diff
-git add -A && git commit -m \"Java 8 to 11\"
+git add -A && git commit -m "Java 8 to 11"
 git push
 ```
 
@@ -83,3 +87,5 @@ https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/tanzu-spring/commercial/
 https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/tanzu-spring/commercial/spring-tanzu/guide-artifact-repository-administrators.html#adding-remote-repository-in-artifactory
 
 https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/tanzu-spring/commercial/spring-tanzu/app-advisor-run-app-advisor-cli.html
+
+https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/tanzu-spring/commercial/spring-tanzu/app-advisor-cli-reference.html
