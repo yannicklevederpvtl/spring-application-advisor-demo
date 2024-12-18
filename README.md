@@ -46,7 +46,7 @@ To edit the 'spring-petclinic' sample project in a new vscode window
 code spring-petclinic
 ```
 
-To use the Spring Application Advisor CLI
+To use the Spring Application Advisor CLI within this 'spring-petclinic' sample project (See official docs [here](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/tanzu-spring/commercial/spring-tanzu/app-advisor-app-advisor-examples.html))
 ```
 advisor build-config get
 advisor build-config publish
