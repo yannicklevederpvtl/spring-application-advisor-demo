@@ -41,8 +41,13 @@ To uninstall and clean up (All images and cache):
 Commands Cheat Sheet
 ---------------------
 
+To edit the 'spring-petclinic' sample project in a new vscode window
 ```
-cd spring-petclinic
+code spring-petclinic
+```
+
+To use the Spring Application Advisor CLI
+```
 advisor build-config get
 advisor build-config publish
 advisor upgrade-plan get

@@ -140,10 +140,11 @@ git remote add 'origin' ssh://git@localhost:2222/srv/git/spring-petclinic-local.
 git push --set-upstream origin advisor-demo
 cd $ADVISOR_DEMO_HOME
 
-echo export ADVISOR_SERVER=http://localhost:9003 >> .envrc_sp
-echo '.envrc' >> ./spring-petclinic/.gitignore
-mv .envrc_sp ./spring-petclinic/.envrc
-direnv allow spring-petclinic
+echo "export ADVISOR_SERVER=\"http://localhost:9003\"" >> .envrc_sp
+echo ".envrc" >> $ADVISOR_DEMO_HOME/spring-petclinic/.gitignore
+mv .envrc_sp $ADVISOR_DEMO_HOME/spring-petclinic/.envrc
+direnv allow $ADVISOR_DEMO_HOME/spring-petclinic
+export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
 ############# Links & Commands Cheat Sheet  #######
 echo ""
@@ -158,9 +159,11 @@ echo -e "${LB}Username:${NC} admin"
 echo -e "${LB}Password:${NC} password"
 echo ""
 echo ""
+echo -e "${LB}To edit 'spring-petclinic' sample in a new vscode window ${NC}"
+echo "code spring-petclinic"
+echo ""
 echo -e "${LB}Spring-Petclinic sample - Commands Cheat Sheet:${NC}"
 echo ""
-echo "cd spring-petclinic"
 echo "advisor build-config get"
 echo "advisor build-config publish"
 echo "advisor upgrade-plan get"

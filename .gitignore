@@ -5,4 +5,5 @@ spring-server/
 spring-petclinic/
 repoesbackup/
 .envrc
+.vscode/
 test.sh
