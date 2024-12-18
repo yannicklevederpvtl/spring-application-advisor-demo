@@ -2,10 +2,9 @@ Spring Application Advisor Local Demo
 =================
 
 
-Spring Advisor Local Demo including a Spring Application Advisor Server, an Artifactory Server and a Git server running on Docker
+Local demo of Spring Application Advisor including a Spring Application Advisor Server, an Artifactory Server and a Git server running on Docker
 
 - [Basic Usage](#basic-usage)
-- [Remote Maven Repository Configuration](#remote-maven-repository-configuration)
 - [Commands Cheat Sheet](#commands-cheat-sheet)
 
 
@@ -21,16 +20,42 @@ Simply run:
 ```
 
 
-### Clean up
+### Uninstall and Clean up
 
-To uninstall and clean up:
+To uninstall (Stop and remove Docker containers, delete Spring-Petclinic sample):
+
+```
+./uninstall.sh
+```
+
+To uninstall and clean up (All images and cache):
 
 ```
 ./cleanup.sh
 ```
 
+<br>
 
-Remote Maven Repository Configuration
+![image description](assets/spring-advisor-demo.svg)
+
+Commands Cheat Sheet
+---------------------
+
+```
+cd spring-petclinic
+advisor build-config get
+advisor build-config publish
+advisor upgrade-plan get
+advisor upgrade-plan apply
+advisor build-config get && advisor upgrade-plan apply
+git diff
+git status
+git diff src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java
+git add -A && git commit -m "Java 8 to 11"
+git push
+```
+
+Remote Maven Repository Configuration (To manually reconfigure repositories)
 ---------------------
 ### Connect to the local Artifactory
 
@@ -61,23 +86,6 @@ Using `admin` as user and `password` as password.
         - In the `Repositories` section, add the `maven-local-repo`, `maven-remote-repo`, `spring-enterprise-mvn-remote` repositories to the `Selected Repositories` panel
     - Click `Create Virtual Repository`
  
-<br>
-
-![image description](assets/spring-advisor-demo.svg)
-
-Commands Cheat Sheet
----------------------
-
-```
-advisor build-config get
-advisor build-config publish
-advisor upgrade-plan get
-advisor upgrade-plan apply
-advisor build-config get && advisor upgrade-plan apply
-git diff
-git add -A && git commit -m "Java 8 to 11"
-git push
-```
 
 Links
 -------

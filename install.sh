@@ -1,14 +1,44 @@
 #!/bin/bash
 export ADVISOR_DEMO_HOME=$(echo $(pwd))
-export BROADCOM_ARTIFACTORY_TOKEN
 
-if [ $BROADCOM_ARTIFACTORY_TOKEN = ""] ;then
-  printf "Broadcom Artifactory Access Token? "
-  read BROADCOM_ARTIFACTORY_TOKEN
+############# Advisor Environment Variables ##############
+if command -v direnv >/dev/null 2>&1; then
+  echo "direnv exists"
+else
+  brew install direnv
+fi
+
+############# Credentials ##############
+if [ "$BROADCOM_ARTIFACTORY_EMAIL" = "" ] ;then
+  read -p "Broadcom Support Portal Email? " BROADCOM_ARTIFACTORY_EMAIL
+
+  if [ "$BROADCOM_ARTIFACTORY_TOKEN" = "" ] ;then
+    read -p "Broadcom Artifactory Access Token? " BROADCOM_ARTIFACTORY_TOKEN    
+  fi
+
+  echo ""
+  printf 'Would you like to save these credentials locally (y/n)? '
+  read answer
+
+  if [ "$answer" != "${answer#[Yy]}" ] ;then 
+      if test -f .envrc; then
+          rm .envrc
+      fi
+      echo "export BROADCOM_ARTIFACTORY_EMAIL=\"$BROADCOM_ARTIFACTORY_EMAIL\"" >> .envrc
+      echo "export BROADCOM_ARTIFACTORY_TOKEN=\"$BROADCOM_ARTIFACTORY_TOKEN\"" >> .envrc
+      direnv allow
+  fi
+fi
+
+########## jq Installation #############
+if command -v jq >/dev/null 2>&1; then
+  echo "jq exists"
+else
+  brew install jq
 fi
 
 ###### Advisor CLI Installation ########
-if command -v advisor >&2; then
+if command -v advisor >/dev/null 2>&1; then
   echo "Advisor CLI exists"
 else
   arch=$(uname -m)
@@ -48,11 +78,29 @@ shared:
     password: password
 END
 chmod -R 777 $JFROG_HOME/artifactory/var
-docker run --name artifactory -v $JFROG_HOME/artifactory/var/:/var/opt/jfrog/artifactory -d -p 8081:8081 -p 8082:8082 releases-docker.jfrog.io/jfrog/artifactory-oss:7.90.17
 cd $ADVISOR_DEMO_HOME
+tar -xzvf repoesbackup.zip
+docker run --name artifactory -v $ADVISOR_DEMO_HOME/repoesbackup:/repoesbackup -v $JFROG_HOME/artifactory/var/:/var/opt/jfrog/artifactory -d -p 8081:8081 -p 8082:8082 releases-docker.jfrog.io/jfrog/artifactory-oss:7.98.11
+
+while true
+do
+    status=$(curl --head -u admin:password  http://localhost:8082/artifactory/api/system/ping -o /dev/null -w '%{http_code}\n' -s)
+    echo "Waiting for Artifactory to be ready"
+    if [[ status -eq 200 ]]; then
+        echo "Artifactory is ready"
+        break
+    fi
+    sleep 20
+done
+jq ".remoteRepoConfigs[0].repoTypeConfig.password = \"$BROADCOM_ARTIFACTORY_TOKEN\"" ./repoesbackup/artifactory.repository.config.json > tmp1.json 
+jq ".remoteRepoConfigs[0].repoTypeConfig.username = \"$BROADCOM_ARTIFACTORY_EMAIL\"" ./tmp1.json  > tmp2.json && mv tmp2.json ./repoesbackup/artifactory.repository.config.json
+rm tmp1.json
+curl -u admin:password -X POST http://localhost:8082/artifactory/api/system/decrypt
+curl -u admin:password --header "Content-Type: application/json" -X POST http://localhost:8082/artifactory/api/import/system --data "{\"importPath\":\"/repoesbackup/\", \"includeMetadata\":true, \"verbose\":true, \"failOnError\":true, \"failIfEmpty\":true }" 
 
 ##### Maven to local Artifactory settings ######
 if test -f $HOME/.m2/settings.xml; then
+  echo ""
   printf 'Maven settings.xml already exists, do you wish to replace your Maven settings.xml (Make a backup before proceeding) (y/n)? '
   read answer
 
@@ -92,47 +140,35 @@ git remote add 'origin' ssh://git@localhost:2222/srv/git/spring-petclinic-local.
 git push --set-upstream origin advisor-demo
 cd $ADVISOR_DEMO_HOME
 
-############# Advisor URL env variable ##############
-if command -v direnv >&2; then
-  echo "direnv exists"
-else
-  brew install direnv
-fi
-
-echo export ADVISOR_SERVER=http://localhost:9003 >> .envrc
+echo export ADVISOR_SERVER=http://localhost:9003 >> .envrc_sp
 echo '.envrc' >> ./spring-petclinic/.gitignore
-mv .envrc ./spring-petclinic/
+mv .envrc_sp ./spring-petclinic/.envrc
 direnv allow spring-petclinic
 
-############# Manual creation of repositories #######
+############# Links & Commands Cheat Sheet  #######
 echo ""
-echo "Spring Advisor Server"
-echo "http://localhost:9003/actuator/health"
+LB="\033[01;34m"
+NC="\033[0m" 
+echo -e "${LB}Spring Application Advisor Server${NC}"
+echo -e "http://localhost:9003/actuator/health"
 echo ""
-echo "Artifactory (Wait a few minutes)"
-echo "http://localhost:8082"
+echo -e "${LB}Artifactory"
+echo -e "URL:${NC}  http://localhost:8082/ui/login/"
+echo -e "${LB}Username:${NC} admin"
+echo -e "${LB}Password:${NC} password"
 echo ""
-
-echo "Local Artifactory Credentials | User: admin, Password: password"
-echo "Repository Key: spring-enterprise-mvn-remote (or preferred on-premise naming convention)"
-echo "URL: https://packages.broadcom.com/artifactory/spring-enterprise"
-echo "User Name: email address for this account"
-echo "Password / Access Token: the value with the save Access Token file for attribute access_token"
 echo ""
-
-printf "Did configure the Maven repositories in the local Artifactory (See README.md) (y)? "
-read answer
-
-if [ "$answer" != "${answer#[Yy]}" ] ;then 
-    echo ""
-    echo "Spring-Petclinic sample - Commands Cheat Sheet:"
-    echo ""
-    echo "cd spring-petclinic"
-    echo "advisor build-config get"
-    echo "advisor build-config publish"
-    echo "advisor upgrade-plan get"
-    echo "advisor upgrade-plan apply"
-    echo "git diff"
-    echo "git add -A && git commit -m \"Java 8 to 11\""
-    echo "git push"
-fi
+echo -e "${LB}Spring-Petclinic sample - Commands Cheat Sheet:${NC}"
+echo ""
+echo "cd spring-petclinic"
+echo "advisor build-config get"
+echo "advisor build-config publish"
+echo "advisor upgrade-plan get"
+echo "advisor upgrade-plan apply"
+echo "advisor build-config get && advisor upgrade-plan apply"
+echo "git diff"
+echo "git status"
+echo "git diff src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java"
+echo "git add -A && git commit -m \"Java 8 to 11\""
+echo "git push"
+echo ""

@@ -3,3 +3,6 @@ advisor
 artifactory/
 spring-server/
 spring-petclinic/
+repoesbackup/
+.envrc
+test.sh
