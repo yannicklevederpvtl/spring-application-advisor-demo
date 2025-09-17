@@ -44,10 +44,10 @@ else
   arch=$(uname -m)
   if [[ $arch == x86_64* ]]; then
     echo "X64 Architecture"
-    curl -L -H "Authorization: Bearer $BROADCOM_ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos/1.1.0/application-advisor-cli-macos-1.1.0.tar
+    curl -L -H "Authorization: Bearer $BROADCOM_ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos/1.1.3/application-advisor-cli-macos-1.1.3.tar
   elif  [[ $arch == arm* ]]; then
     echo "ARM Architecture"
-    curl -L -H "Authorization: Bearer $BROADCOM_ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos-arm64/1.1.0/application-advisor-cli-macos-arm64-1.1.0.tar
+    curl -L -H "Authorization: Bearer $BROADCOM_ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos-arm64/1.1.3/application-advisor-cli-macos-arm64-1.1.3.tar
   fi
   tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF
   echo "Installation of the Advisor CLI"
@@ -55,12 +55,12 @@ else
 fi
 
 ###### Advisor Server Download ########
-curl -L -H "Authorization: Bearer $BROADCOM_ARTIFACTORY_TOKEN" -o spring-server.jar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/tanzu-spring-server/1.1.0/tanzu-spring-server-1.1.0.jar
+curl -L -H "Authorization: Bearer $BROADCOM_ARTIFACTORY_TOKEN" -o spring-server.jar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-server/1.1.3/application-advisor-server-1.1.3.jar 
 mkdir spring-server
 mv ./spring-server.jar spring-server
 
 ######### Postgres Deployment ##########
-docker run --name postgres -itd -e POSTGRES_USER=artifactory -e POSTGRES_PASSWORD=password -e POSTGRES_DB=artifactorydb -p 5432:5432 library/postgres
+docker run --name postgresspringadvisor -itd -e POSTGRES_USER=artifactory -e POSTGRES_PASSWORD=password -e POSTGRES_DB=artifactorydb -p 5432:5432 library/postgres
 sleep 10
 
 ######### Artifactory Deployment ##########
@@ -80,7 +80,7 @@ END
 chmod -R 777 $JFROG_HOME/artifactory/var
 cd $ADVISOR_DEMO_HOME
 tar -xzvf repoesbackup.zip
-docker run --name artifactory -v $ADVISOR_DEMO_HOME/repoesbackup:/repoesbackup -v $JFROG_HOME/artifactory/var/:/var/opt/jfrog/artifactory -d -p 8081:8081 -p 8082:8082 releases-docker.jfrog.io/jfrog/artifactory-oss:7.98.11
+docker run --name artifactory -v $ADVISOR_DEMO_HOME/repoesbackup:/repoesbackup -v $JFROG_HOME/artifactory/var/:/var/opt/jfrog/artifactory -d -p 8081:8081 -p 8082:8082 releases-docker.jfrog.io/jfrog/artifactory-oss:7.98.19
 
 while true
 do
