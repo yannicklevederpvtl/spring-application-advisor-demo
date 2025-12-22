@@ -62,6 +62,12 @@ git push
 advisor upgrade-plan get
 advisor upgrade-plan apply
 
+
+## Application Advisor MCP Configuration Guide
+
+[MCP Configuration Guide](MCP_CONFIGURATION_GUIDE.md)
+
+
 Remote Maven Repository Configuration (To manually reconfigure repositories)
 ---------------------
 ### Connect to the local Artifactory
