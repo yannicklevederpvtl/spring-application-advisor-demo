@@ -40,6 +40,21 @@ fi
 ###### Advisor CLI Installation ########
 if command -v advisor >/dev/null 2>&1; then
   echo "Advisor CLI exists"
+
+  printf 'Would you like to replace the Advisor CLI (y/n)? '
+  read answer
+
+  if [ "$answer" != "${answer#[Yy]}" ] ;then 
+      arch=$(uname -m)
+      if [[ $arch == x86_64* ]]; then
+        curl -L -H "Authorization: Bearer $BROADCOM_ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos/1.5.3/application-advisor-cli-macos-1.5.3.tar
+      elif  [[ $arch == arm* ]]; then
+        curl -L -H "Authorization: Bearer $BROADCOM_ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos-arm64/1.5.3/application-advisor-cli-macos-arm64-1.5.3.tar
+      fi
+      tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF
+      echo "Installation of the Advisor CLI"
+      sudo cp advisor /usr/local/bin/
+  fi
 else
   arch=$(uname -m)
   if [[ $arch == x86_64* ]]; then
@@ -175,5 +190,5 @@ echo ""
 echo "advisor upgrade-plan get"
 echo "advisor upgrade-plan apply"
 echo ""
-echo "See the MCP_CONFIGURATION_GUIDE.md to configure the MCP Server with your IDE"
+echo "See the MCP_CONFIGURATION_GUIDE.md to configure the Spring Application Advisor MCP Server with your IDE"
 echo ""

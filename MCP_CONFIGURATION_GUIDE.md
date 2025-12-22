@@ -1,6 +1,6 @@
-# Application Advisor MCP Configuration Guide
+# Spring Application Advisor MCP Configuration Guide
 
-This guide provides the exact configuration to connect to your Application Advisor server running on Docker (port 9003) using the `advisor mcp` command.
+This guide provides the exact configuration to connect to your Spring Application Advisor server running on Docker (port 9003) using the `advisor mcp` command.
 
 ## Configuration
 
