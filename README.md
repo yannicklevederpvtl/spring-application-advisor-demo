@@ -57,11 +57,11 @@ git status
 git diff src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java
 git add -A && git commit -m "Java 8 to 11"
 git push
-```
+
 
 advisor upgrade-plan get
 advisor upgrade-plan apply
-
+```
 
 ## Application Advisor MCP Configuration Guide
 
