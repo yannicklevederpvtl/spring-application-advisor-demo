@@ -22,7 +22,7 @@
     <mirror>
       <mirrorOf>*</mirrorOf>
       <name>maven-virtual-repo</name>
-      <url>http://localhost:8081/artifactory/maven-virtual-repo</url>
+      <url>http://localhost:8082/artifactory/maven-virtual-repo</url>
       <id>maven-virtual-repo</id>
     </mirror>
   </mirrors>
@@ -35,13 +35,13 @@
           </snapshots>
           <id>central</id>
           <name>maven-virtual-repo</name>
-          <url>http://localhost:8081/artifactory/maven-virtual-repo</url>
+          <url>http://localhost:8082/artifactory/maven-virtual-repo</url>
         </repository>
         <repository>
           <snapshots />
           <id>snapshots</id>
           <name>maven-virtual-repo</name>
-          <url>http://localhost:8081/artifactory/maven-virtual-repo</url>
+          <url>http://localhost:8082/artifactory/maven-virtual-repo</url>
         </repository>
       </repositories>
       <pluginRepositories>
@@ -51,13 +51,13 @@
           </snapshots>
           <id>central</id>
           <name>maven-virtual-repo</name>
-          <url>http://localhost:8081/artifactory/maven-virtual-repo</url>
+          <url>http://localhost:8082/artifactory/maven-virtual-repo</url>
         </pluginRepository>
         <pluginRepository>
           <snapshots />
           <id>snapshots</id>
           <name>maven-virtual-repo</name>
-          <url>http://localhost:8081/artifactory/maven-virtual-repo</url>
+          <url>http://localhost:8082/artifactory/maven-virtual-repo</url>
         </pluginRepository>
       </pluginRepositories>
       <id>artifactory</id>

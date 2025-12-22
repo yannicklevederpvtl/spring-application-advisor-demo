@@ -49,16 +49,18 @@ code spring-petclinic
 To use the Spring Application Advisor CLI within this 'spring-petclinic' sample project (See official docs [here](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/tanzu-spring/commercial/spring-tanzu/app-advisor-app-advisor-examples.html))
 ```
 advisor build-config get
-advisor build-config publish
 advisor upgrade-plan get
 advisor upgrade-plan apply
-advisor build-config get && advisor upgrade-plan apply
+
 git diff
 git status
 git diff src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java
 git add -A && git commit -m "Java 8 to 11"
 git push
 ```
+
+advisor upgrade-plan get
+advisor upgrade-plan apply
 
 Remote Maven Repository Configuration (To manually reconfigure repositories)
 ---------------------

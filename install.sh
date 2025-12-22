@@ -44,10 +44,10 @@ else
   arch=$(uname -m)
   if [[ $arch == x86_64* ]]; then
     echo "X64 Architecture"
-    curl -L -H "Authorization: Bearer $BROADCOM_ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos/1.1.3/application-advisor-cli-macos-1.1.3.tar
+    curl -L -H "Authorization: Bearer $BROADCOM_ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos/1.5.3/application-advisor-cli-macos-1.5.3.tar
   elif  [[ $arch == arm* ]]; then
     echo "ARM Architecture"
-    curl -L -H "Authorization: Bearer $BROADCOM_ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos-arm64/1.1.3/application-advisor-cli-macos-arm64-1.1.3.tar
+    curl -L -H "Authorization: Bearer $BROADCOM_ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos-arm64/1.5.3/application-advisor-cli-macos-arm64-1.5.3.tar
   fi
   tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF
   echo "Installation of the Advisor CLI"
@@ -80,7 +80,7 @@ END
 chmod -R 777 $JFROG_HOME/artifactory/var
 cd $ADVISOR_DEMO_HOME
 tar -xzvf repoesbackup.zip
-docker run --name artifactory -v $ADVISOR_DEMO_HOME/repoesbackup:/repoesbackup -v $JFROG_HOME/artifactory/var/:/var/opt/jfrog/artifactory -d -p 8081:8081 -p 8082:8082 releases-docker.jfrog.io/jfrog/artifactory-oss:7.98.19
+docker run --name artifactory -v $ADVISOR_DEMO_HOME/repoesbackup:/repoesbackup -v $JFROG_HOME/artifactory/var/:/var/opt/jfrog/artifactory -d -p 8081:8081 -p 8082:8082 releases-docker.jfrog.io/jfrog/artifactory-oss:7.117.19
 
 while true
 do
@@ -165,13 +165,13 @@ echo ""
 echo -e "${LB}Spring-Petclinic sample - Commands Cheat Sheet:${NC}"
 echo ""
 echo "advisor build-config get"
-echo "advisor build-config publish"
 echo "advisor upgrade-plan get"
 echo "advisor upgrade-plan apply"
-echo "advisor build-config get && advisor upgrade-plan apply"
 echo "git diff"
 echo "git status"
 echo "git diff src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java"
 echo "git add -A && git commit -m \"Java 8 to 11\""
-echo "git push"
+echo ""
+echo "advisor upgrade-plan get"
+echo "advisor upgrade-plan apply"
 echo ""
