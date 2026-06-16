@@ -50,11 +50,11 @@ Two install modes — same **Application Advisor CLI**, different Maven topology
 
 ### Minimal setup (recommended)
 
-![Minimal setup — CLI, mapping files, Maven Central, Spring Enterprise, local repo](assets/spring-advisor-demo-minimal.svg)
+![Minimal setup — CLI, mapping files, Maven Central, Spring Enterprise, ~/.m2](assets/spring-advisor-demo-minimal.svg)
 
 The **Spring Application Advisor CLI** reads **mapping files** (OpenRewrite recipes ↔ Spring projects) from `demo/mappings/` — for example `acme-spring-commons.json` in Demo 2.
 
-Maven resolves artifacts directly from **Maven Central** and the **Spring Enterprise Repository**; resolved dependencies are cached in your **maven-local-repo** (`~/.m2`, plus `demo/local-repo/` for the offline `acme-spring-commons` JARs).
+Maven resolves artifacts directly from **Maven Central** and the **Spring Enterprise Repository**; the CLI caches them in **`~/.m2`**. For Demo 2, offline **`acme-spring-commons`** JARs in **`demo/local-repo/`** are bootstrapped into `~/.m2` by `./demo/reset-demo.sh`.
 
 ### Enterprise lab (optional)
 

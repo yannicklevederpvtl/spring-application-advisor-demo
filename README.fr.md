@@ -52,11 +52,11 @@ Deux modes d’installation — le même **CLI Application Advisor**, topologies
 
 ### Mode minimal (recommandé)
 
-![Mode minimal — CLI, fichiers de mapping, Maven Central, Spring Enterprise, dépôt local](assets/spring-advisor-demo-minimal.svg)
+![Mode minimal — CLI, fichiers de mapping, Maven Central, Spring Enterprise, ~/.m2](assets/spring-advisor-demo-minimal.svg)
 
 Le **CLI Spring Application Advisor** lit les **fichiers de mapping** (recettes OpenRewrite ↔ projets Spring) dans `demo/mappings/` — par exemple `acme-spring-commons.json` pour la Démo 2.
 
-Maven résout les artefacts directement depuis **Maven Central** et le **dépôt Spring Enterprise** ; les dépendances sont mises en cache dans le **maven-local-repo** (`~/.m2`, plus `demo/local-repo/` pour les JARs `acme-spring-commons` hors ligne).
+Maven résout les artefacts directement depuis **Maven Central** et le **dépôt Spring Enterprise** ; le CLI les met en cache dans **`~/.m2`**. Pour la Démo 2, les JARs **`acme-spring-commons`** hors ligne dans **`demo/local-repo/`** sont injectés dans `~/.m2` par `./demo/reset-demo.sh`.
 
 ### Lab entreprise (optionnel)
 
