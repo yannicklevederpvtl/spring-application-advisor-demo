@@ -1,112 +1,135 @@
-Spring Application Advisor Local Demo
-=================
+# Spring Application Advisor Demo
 
+Local hands-on demo for **[Application Advisor 1.6.3](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/application-advisor/1-6/app-advisor/index.html)** — upgrade **Spring Petclinic** from Boot 2.7 to 4.0 and explore **custom upgrade mappings** for internal shared libraries.
 
-Local demo of Spring Application Advisor including a Spring Application Advisor Server, an Artifactory Server and a Git server running on Docker
+🇫🇷 [Version française](README.fr.md)
 
-- [Basic Usage](#basic-usage)
-- [Commands Cheat Sheet](#commands-cheat-sheet)
+## What’s included
 
+| Demo | Description | Guide |
+|---|---|---|
+| **Demo 1** | Spring Boot 2.7 → 4.0 incremental upgrade | [docs/DEMO-1-upgrade-boot.md](docs/DEMO-1-upgrade-boot.md) |
+| **Demo 2** | Internal library `acme-spring-commons` + custom mapping | [docs/DEMO-2-custom-upgrades.md](docs/DEMO-2-custom-upgrades.md) |
+| **MCP** | IDE integration via `advisor mcp` (no server required) | [docs/MCP_CONFIGURATION_GUIDE.md](docs/MCP_CONFIGURATION_GUIDE.md) |
 
-Basic Usage
------------
+Official how-to index: [Application Advisor how-to guides](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/application-advisor/1-6/app-advisor/app-advisor-examples.html)
 
-Get your Access Token from [Spring Enterprise Subscription](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/tanzu-spring/commercial/spring-tanzu/guide-artifact-repository-administrators.html)
+## Prerequisites
 
-Simply run:
+- **macOS or Linux** (auto-detected)
+- **Broadcom Support Portal** account with ability to create/login and obtain a **Registry Token**
+- Entitlement: **Tanzu Spring** or **Tanzu Platform**
+- **JDK 17+** minimum for Advisor CLI; **JDK 8, 11, 17** recommended for the upgrade path
+- **Git**, **curl**, **Maven** (or use `./mvnw` in petclinic)
+- **Enterprise lab mode only:** Docker, Podman, or another OCI-compatible container engine (auto-detected)
 
-```
+### Maven repository access
+
+- **Minimal mode:** Maven Central + `https://packages.broadcom.com/artifactory/spring-enterprise/` (direct), or your organization's **internal mirror** of Spring Enterprise — configure the URL/credentials your platform team provides in `~/.m2/settings.xml`.
+- **Enterprise lab mode:** local Artifactory OSS proxies Spring Enterprise (see install menu option 2).
+
+## Quick start
+
+```bash
+git clone <this-repo>
+cd spring-application-advisor-demo
 ./install.sh
 ```
 
+Interactive menu:
 
-### Uninstall and Clean up
+1. **Minimal** (default) — Maven direct to Spring Enterprise; no containers
+2. **Enterprise lab** — Artifactory OSS mirror (with Postgres)
+3. **Optional:** local Git server (reconfigures `spring-petclinic` origin for `git push` demos)
 
-To uninstall (Stop and remove Docker containers, delete Spring-Petclinic sample):
+Credentials are stored optionally in `.envrc` (see `.envrc.example`). **Never commit tokens.**
 
-```
-./uninstall.sh
-```
+## Architecture
 
-To uninstall and clean up (All images and cache):
+Two install modes — same **Application Advisor CLI**, different Maven topology. No Application Advisor Server in either mode.
 
-```
-./cleanup.sh
-```
+### Minimal setup (recommended)
 
-<br>
+![Minimal setup — CLI, mapping files, Maven Central, Spring Enterprise, local repo](assets/spring-advisor-demo-minimal.svg)
 
-![image description](assets/spring-advisor-demo.svg)
+The **Spring Application Advisor CLI** reads **mapping files** (OpenRewrite recipes ↔ Spring projects) from `demo/mappings/` — for example `acme-spring-commons.json` in Demo 2.
 
-Commands Cheat Sheet
----------------------
+Maven resolves artifacts directly from **Maven Central** and the **Spring Enterprise Repository**; resolved dependencies are cached in your **maven-local-repo** (`~/.m2`, plus `demo/local-repo/` for the offline `acme-spring-commons` JARs).
 
-To edit the 'spring-petclinic' sample project in a new vscode window
-```
-code spring-petclinic
-```
+### Enterprise lab (optional)
 
-To use the Spring Application Advisor CLI within this 'spring-petclinic' sample project (See official docs [here](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/tanzu-spring/commercial/spring-tanzu/app-advisor-app-advisor-examples.html))
-```
+![Enterprise lab — CLI, mapping files, Git, Artifactory, upstream repos](assets/spring-advisor-demo-enterprise-lab.svg)
+
+Same CLI and **mapping files** flow. Maven is pointed at a local **Artifactory OSS** mirror (with Postgres; pre-configured repos from `repoesbackup.zip`):
+
+| Artifactory repo | Role |
+|---|---|
+| `maven-virtual-repo` | Single Maven URL in `settings.xml` |
+| `maven-remote-repo` | Proxies **Maven Central** |
+| `spring-enterprise-mvn-remote` | Proxies **Spring Enterprise Repository** |
+| `maven-local-repo` | Cached artifacts on the mirror |
+
+An optional local **Git repo** (install menu option 3) lets you demo `git push` after `advisor upgrade-plan apply`.
+
+### Demo 1 — Boot upgrade
+
+```bash
+cd spring-petclinic
 advisor build-config get
 advisor upgrade-plan get
 advisor upgrade-plan apply
-
 git diff
-git status
-git diff src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java
-git add -A && git commit -m "Java 8 to 11"
-git push
-
-
-advisor upgrade-plan get
-advisor upgrade-plan apply
 ```
 
-## Application Advisor MCP Configuration Guide
+See [docs/DEMO-1-upgrade-boot.md](docs/DEMO-1-upgrade-boot.md) for the full Java 8 → 11 → 17 → Boot 4 flow.
 
-[MCP Configuration Guide](MCP_CONFIGURATION_GUIDE.md)
+### Demo 2 — Custom shared library
 
+```bash
+./demo/reset-demo.sh
+export SPRING_ADVISOR_MAPPING_CUSTOM_0_FILEPATH="$(pwd)/demo/mappings/acme-spring-commons.json"
+cd spring-petclinic
+advisor upgrade-plan get
+```
 
-Remote Maven Repository Configuration (To manually reconfigure repositories)
----------------------
-### Connect to the local Artifactory
+See [docs/DEMO-2-custom-upgrades.md](docs/DEMO-2-custom-upgrades.md).
 
-[http://localhost:8082/ui/login/](http://localhost:8082/ui/login/)
+## Repository layout
 
+```
+├── install.sh                 # interactive setup entry point
+├── scripts/                   # modular install/uninstall scripts
+├── config/                    # Maven + MCP templates
+├── demo/                      # acme-spring-commons, local-repo, mappings, reset-demo.sh
+├── docs/                      # step-by-step guides
+├── assets/                    # architecture diagrams (SVG)
+├── spring-petclinic/          # cloned at install (gitignored)
+└── repoesbackup.zip           # Artifactory pre-config (enterprise lab only)
+```
 
-Using `admin` as user and `password` as password.
+## Uninstall
 
-- In the `Administration` tab, select `Repositories` in the left menu
-- Click `Create a Repository`, select `Remote`, select `Maven`
-    - Enter the following information:
-        - Repository Key: `spring-enterprise-mvn-remote`
-        - URL: https://packages.broadcom.com/artifactory/spring-enterprise
-        - User Name: `email address` for this account
-        - Password / Access Token: the value with the save `Access Token` file for attribute `access_token`
-    - Click `Test` if successful click `Create Remote Repository`
-- Click `Create a Repository`, select `Remote`, select `Maven`
-    - Enter the following information:
-        - Repository Key: `maven-remote-repo`
-    - Click `Create Remote Repository`
-- Click `Create a Repository`, select `Local`, select `Maven`
-    - Enter the following information:
-        - Repository Key: `maven-local-repo`
-    - Click `Create Local Repository`
-- Click `Create a Repository`, select `Virtual`, select `Maven`
-    - Enter the following information:
-        - Repository Key: `maven-virtual-repo`
-        - In the `Repositories` section, add the `maven-local-repo`, `maven-remote-repo`, `spring-enterprise-mvn-remote` repositories to the `Selected Repositories` panel
-    - Click `Create Virtual Repository`
- 
+```bash
+./uninstall.sh    # stop containers, remove petclinic clone
+./cleanup.sh      # also remove images, .envrc, downloaded CLI tarball
+```
 
-Links
--------
+Neither script deletes your entire `~/.m2` cache.
 
-https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/tanzu-spring/commercial/spring-tanzu/app-advisor-app-advisor-examples.html
+## Additional resources
 
-https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/tanzu-spring/commercial/spring-tanzu/guide-artifact-repository-administrators.html#adding-remote-repository-in-artifactory
+- [Application Advisor intro (Spring Academy)](https://spring.academy/guides/app-advisor-intro)
+- [Upgrade Spring Boot 2.7 → 4.0](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/application-advisor/1-6/app-advisor/how-to-guides-upgrade-boot.html)
+- [Custom upgrade mappings](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/application-advisor/1-6/app-advisor/custom-upgrades.html)
+- [Spring Enterprise Repository (developers)](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/tanzu-spring/commercial/spring-tanzu/guide-artifact-repository-developers.html)
+- [Spring Enterprise Repository (administrators)](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/tanzu-spring/commercial/spring-tanzu/guide-artifact-repository-administrators.html)
 
-https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/tanzu-spring/commercial/spring-tanzu/app-advisor-run-app-advisor-cli.html
+---
 
-https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/tanzu-spring/commercial/spring-tanzu/app-advisor-cli-reference.html
+### Windows users
+
+This demo is tested on **macOS and Linux**. On Windows, use **WSL2** (Ubuntu) and run `./install.sh` there, or install manually:
+
+- Download `application-advisor-cli-windows-1.6.3` from the Spring Enterprise repository (`packages.broadcom.com`)
+- Configure `%USERPROFILE%\.m2\settings.xml` using `config/settings-maven-direct.xml.template`
+- Use `mvnw.cmd` instead of `./mvnw`

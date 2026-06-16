@@ -1,0 +1,6 @@
+# Copy to .envrc and fill in your values (never commit .envrc with real tokens).
+export ADVISOR_DEMO_HOME="/path/to/spring-application-advisor-demo"
+export WORKSHOP_ROOT="${ADVISOR_DEMO_HOME}"
+export BROADCOM_ARTIFACTORY_EMAIL="your-email@example.com"
+export REGISTRY_TOKEN="your-registry-token-from-support-portal"
+export BROADCOM_ARTIFACTORY_TOKEN="${REGISTRY_TOKEN}"

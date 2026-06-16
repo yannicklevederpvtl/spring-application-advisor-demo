@@ -1,9 +1,13 @@
 advisor-cli.tar
 advisor
 artifactory/
-spring-server/
 spring-petclinic/
 repoesbackup/
 .envrc
+.envrc_sp
 .vscode/
-test.sh
+tmp1.json
+tmp2.json
+
+# acme-spring-commons build output (committed artifacts live under demo/local-repo/)
+demo/acme-spring-commons/target/

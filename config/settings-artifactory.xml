@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<settings xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0 http://maven.apache.org/xsd/settings-1.2.0.xsd" xmlns="http://maven.apache.org/SETTINGS/1.2.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<settings xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0 http://maven.apache.org/xsd/settings-1.2.0.xsd"
+          xmlns="http://maven.apache.org/SETTINGS/1.2.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <servers>
     <server>
-      <username>admin</username>
-      <password>password</password>
       <id>central</id>
-    </server>
-    <server>
       <username>admin</username>
       <password>password</password>
+    </server>
+    <server>
       <id>snapshots</id>
-    </server>
-    <server>
       <username>admin</username>
       <password>password</password>
+    </server>
+    <server>
       <id>maven-virtual-repo</id>
+      <username>admin</username>
+      <password>password</password>
     </server>
   </servers>
   <mirrors>
@@ -28,11 +29,10 @@
   </mirrors>
   <profiles>
     <profile>
+      <id>artifactory</id>
       <repositories>
         <repository>
-          <snapshots>
-            <enabled>false</enabled>
-          </snapshots>
+          <snapshots><enabled>false</enabled></snapshots>
           <id>central</id>
           <name>maven-virtual-repo</name>
           <url>http://localhost:8082/artifactory/maven-virtual-repo</url>
@@ -46,9 +46,7 @@
       </repositories>
       <pluginRepositories>
         <pluginRepository>
-          <snapshots>
-            <enabled>false</enabled>
-          </snapshots>
+          <snapshots><enabled>false</enabled></snapshots>
           <id>central</id>
           <name>maven-virtual-repo</name>
           <url>http://localhost:8082/artifactory/maven-virtual-repo</url>
@@ -60,7 +58,6 @@
           <url>http://localhost:8082/artifactory/maven-virtual-repo</url>
         </pluginRepository>
       </pluginRepositories>
-      <id>artifactory</id>
     </profile>
   </profiles>
   <activeProfiles>

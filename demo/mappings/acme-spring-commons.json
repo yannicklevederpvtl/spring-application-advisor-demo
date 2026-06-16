@@ -1,0 +1,57 @@
+{
+  "initRecipes": [],
+  "projects": [
+    {
+      "slug": "acme-spring-commons",
+      "coordinates": [
+        "com.acme:acme-spring-commons"
+      ],
+      "repositoryUrl": "https://github.com/acme/acme-spring-commons",
+      "rewrite": {
+        "1.0.x": {
+          "recipes": [],
+          "requirements": {
+            "supportedJavaVersions": {
+              "major": 8,
+              "minor": 0
+            },
+            "supportedGenerations": {
+              "spring-boot": "2.7.x"
+            }
+          },
+          "nextRewrite": {
+            "version": "2.0.x"
+          }
+        },
+        "2.0.x": {
+          "recipes": [],
+          "requirements": {
+            "supportedJavaVersions": {
+              "major": 17,
+              "minor": 0
+            },
+            "supportedGenerations": {
+              "spring-boot": "3.2.x"
+            }
+          },
+          "nextRewrite": {
+            "version": "3.0.x"
+          }
+        },
+        "3.0.x": {
+          "recipes": [],
+          "requirements": {
+            "supportedJavaVersions": {
+              "major": 17,
+              "minor": 0
+            },
+            "supportedGenerations": {
+              "spring-boot": "4.0.x"
+            }
+          },
+          "nextRewrite": null
+        }
+      }
+    }
+  ]
+}

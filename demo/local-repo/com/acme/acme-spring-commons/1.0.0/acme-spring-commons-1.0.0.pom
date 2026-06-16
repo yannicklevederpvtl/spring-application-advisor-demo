@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.acme</groupId>
+  <artifactId>acme-spring-commons</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+
+  <name>acme-spring-commons</name>
+  <description>Internal shared library pinned to the Spring Boot 2.7 generation (demo).</description>
+
+  <properties>
+    <maven.compiler.release>8</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <!-- Ties this library to the Spring Boot 2.7 generation. This is what makes
+         Application Advisor refuse to upgrade a consumer past Boot 2.7 until a
+         custom upgrade mapping exists for acme-spring-commons. -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+      <version>2.7.3</version>
+    </dependency>
+  </dependencies>
+</project>

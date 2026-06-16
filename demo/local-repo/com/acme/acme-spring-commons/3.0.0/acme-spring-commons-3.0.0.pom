@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.acme</groupId>
+  <artifactId>acme-spring-commons</artifactId>
+  <version>3.0.0</version>
+  <packaging>jar</packaging>
+
+  <name>acme-spring-commons</name>
+  <description>Internal shared library upgraded to the Spring Boot 4.0 generation (demo).</description>
+
+  <properties>
+    <maven.compiler.release>17</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <!-- The Boot 4 generation. The custom mapping's nextRewrite points 2.0.x -> 3.0.x,
+         so once mapped, Advisor can plan the Boot 4 upgrade of the consumer. -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+      <version>4.0.7</version>
+    </dependency>
+  </dependencies>
+</project>
