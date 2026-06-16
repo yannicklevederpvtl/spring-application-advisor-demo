@@ -47,6 +47,8 @@ chmod -R 777 "${JFROG_HOME}/artifactory/var"
 echo "==> Extracting Artifactory repository backup"
 rm -rf "${ADVISOR_DEMO_HOME}/repoesbackup"
 tar -xzf "${ADVISOR_DEMO_HOME}/repoesbackup.zip" -C "${ADVISOR_DEMO_HOME}"
+# Ensure container user can read backup (tar preserves restrictive modes)
+chmod -R a+rX "${ADVISOR_DEMO_HOME}/repoesbackup"
 
 if ${CONTAINER_CMD} ps -a --format '{{.Names}}' | grep -qx artifactory; then
   echo "    artifactory container already exists — starting if stopped"
@@ -84,10 +86,16 @@ mv "${ADVISOR_DEMO_HOME}/tmp2.json" "${ADVISOR_DEMO_HOME}/repoesbackup/artifacto
 rm -f "${ADVISOR_DEMO_HOME}/tmp1.json"
 
 curl -sf -u admin:password -X POST http://localhost:8082/artifactory/api/system/decrypt || true
-curl -sf -u admin:password \
+import_status=$(curl -s -o /tmp/advisor-artifactory-import.json -w '%{http_code}' -u admin:password \
   -H "Content-Type: application/json" \
   -X POST http://localhost:8082/artifactory/api/import/system \
-  --data '{"importPath":"/repoesbackup/","includeMetadata":true,"verbose":true,"failOnError":true,"failIfEmpty":true}'
+  --data '{"importPath":"/repoesbackup/","includeMetadata":true,"verbose":true,"failOnError":true,"failIfEmpty":true}')
+if [[ "$import_status" != "200" && "$import_status" != "201" ]]; then
+  echo "ERROR: Artifactory system import failed (HTTP ${import_status})" >&2
+  head -c 2000 /tmp/advisor-artifactory-import.json >&2 || true
+  exit 1
+fi
+echo "    repository import complete"
 
 echo "==> Hydrating ~/.m2 with acme-spring-commons (works with Artifactory mirror)"
 "${ADVISOR_DEMO_HOME}/demo/reset-demo.sh" --hydrate-only 2>/dev/null || true
