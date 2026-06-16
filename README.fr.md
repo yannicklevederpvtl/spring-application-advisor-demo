@@ -73,6 +73,8 @@ Même flux CLI et **fichiers de mapping**. Maven pointe vers un **miroir Artifac
 
 Un **dépôt Git** local optionnel (menu d’installation, option 3) permet de démontrer un `git push` après `advisor upgrade-plan apply`.
 
+Après installation du lab entreprise, **UI Artifactory :** http://localhost:8082/ui/login/ (`admin` / `password` — démo locale uniquement).
+
 ### Démo 1 — Montée Boot
 
 ```bash

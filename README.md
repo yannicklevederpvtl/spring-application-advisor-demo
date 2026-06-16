@@ -71,6 +71,8 @@ Same CLI and **mapping files** flow. Maven is pointed at a local **Artifactory O
 
 An optional local **Git repo** (install menu option 3) lets you demo `git push` after `advisor upgrade-plan apply`.
 
+After enterprise install, **Artifactory UI:** http://localhost:8082/ui/login/ (`admin` / `password` — local demo only).
+
 ### Demo 1 — Boot upgrade
 
 ```bash
