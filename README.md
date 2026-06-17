@@ -46,7 +46,7 @@ Credentials are stored optionally in `.envrc` (see `.envrc.example`). **Never co
 
 ## Architecture
 
-Two install modes — same **Application Advisor CLI**, different Maven topology. No Application Advisor Server in either mode.
+Two install modes — same **Application Advisor CLI**, different Maven topology.
 
 ### Minimal setup (recommended)
 
