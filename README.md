@@ -9,7 +9,7 @@ Local hands-on demo for **[Application Advisor 1.6.3](https://techdocs.broadcom.
 | Demo | Description | Guide |
 |---|---|---|
 | **Demo 1** | Spring Boot 2.7 → 4.0 incremental upgrade | [docs/DEMO-1-upgrade-boot.md](docs/DEMO-1-upgrade-boot.md) |
-| **Demo 2** | Internal library `acme-spring-commons` + custom mapping | [docs/DEMO-2-custom-upgrades.md](docs/DEMO-2-custom-upgrades.md) |
+| **Demo 2** | Custom mapping for `acme-spring-commons`; finish Boot upgrade with Demo 1 loop | [docs/DEMO-2-custom-upgrades.md](docs/DEMO-2-custom-upgrades.md) |
 | **MCP** | IDE integration via `advisor mcp` (no server required) | [docs/MCP_CONFIGURATION_GUIDE.md](docs/MCP_CONFIGURATION_GUIDE.md) |
 
 Official how-to index: [Application Advisor how-to guides](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/application-advisor/1-6/app-advisor/app-advisor-examples.html)
@@ -94,7 +94,7 @@ cd spring-petclinic
 advisor upgrade-plan get
 ```
 
-See [docs/DEMO-2-custom-upgrades.md](docs/DEMO-2-custom-upgrades.md).
+See [docs/DEMO-2-custom-upgrades.md](docs/DEMO-2-custom-upgrades.md). Then continue with the [Demo 1 incremental upgrade loop](docs/DEMO-1-upgrade-boot.md#incremental-upgrade-loop) to reach Boot 4.0.
 
 ## Repository layout
 

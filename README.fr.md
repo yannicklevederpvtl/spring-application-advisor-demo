@@ -9,7 +9,7 @@ Démo locale pour **[Application Advisor 1.6.3](https://techdocs.broadcom.com/us
 | Démo | Description | Guide |
 |---|---|---|
 | **Démo 1** | Montée Boot 2.7 → 4.0 | [docs/DEMO-1-upgrade-boot.md](docs/DEMO-1-upgrade-boot.md) |
-| **Démo 2** | Bibliothèque `acme-spring-commons` + mapping personnalisé | [docs/DEMO-2-custom-upgrades.md](docs/DEMO-2-custom-upgrades.md) |
+| **Démo 2** | Mapping personnalisé `acme-spring-commons` ; terminer la montée Boot avec la boucle Démo 1 | [docs/DEMO-2-custom-upgrades.md](docs/DEMO-2-custom-upgrades.md) |
 | **MCP** | Intégration IDE via `advisor mcp` (sans serveur) | [docs/MCP_CONFIGURATION_GUIDE.md](docs/MCP_CONFIGURATION_GUIDE.md) |
 
 Guides officiels : [Application Advisor how-to guides](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/application-advisor/1-6/app-advisor/app-advisor-examples.html)
@@ -96,7 +96,7 @@ cd spring-petclinic
 advisor upgrade-plan get
 ```
 
-Voir [docs/DEMO-2-custom-upgrades.md](docs/DEMO-2-custom-upgrades.md).
+Voir [docs/DEMO-2-custom-upgrades.md](docs/DEMO-2-custom-upgrades.md). Poursuivez ensuite avec la [boucle incrémentale de la Démo 1](docs/DEMO-1-upgrade-boot.md#incremental-upgrade-loop) pour atteindre Boot 4.0.
 
 ## Désinstallation
 

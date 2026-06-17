@@ -2,6 +2,8 @@
 
 Shows how Application Advisor handles an **internal shared library** (`com.acme:acme-spring-commons`) that blocks a Spring Boot upgrade until a **custom upgrade mapping** is provided.
 
+**Audience:** Same pinned `spring-petclinic` as [Demo 1](DEMO-1-upgrade-boot.md). Demo 2 focuses on the **mapping** story. After the mapping unblocks the plan, you still complete Boot 2.7 → 4.0 with Demo 1’s **incremental apply loop** (one step at a time).
+
 Official reference: [Configure upgrade mappings for internal shared libraries](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/application-advisor/1-6/app-advisor/custom-upgrades.html)
 
 ## Assets
@@ -48,10 +50,31 @@ Advisor detects the unmapped internal library and limits the upgrade plan.
 export SPRING_ADVISOR_MAPPING_CUSTOM_0_FILEPATH="${ADVISOR_DEMO_HOME}/demo/mappings/acme-spring-commons.json"
 advisor upgrade-plan get
 advisor upgrade-plan apply
-git diff    # acme-spring-commons version bumped + Boot upgrade changes
+git diff    # first step: acme-spring-commons + Boot changes (plan may not be complete yet)
 ```
 
-### (c) Verify
+### (c) Finish the Boot upgrade (same as Demo 1)
+
+The mapping unblocks planning for `acme-spring-commons`. You still apply the upgrade **one step at a time** — switch JDKs, test, and commit between steps.
+
+Follow the [Demo 1 incremental upgrade loop](DEMO-1-upgrade-boot.md#incremental-upgrade-loop), especially:
+
+- [Java 8 → 11](DEMO-1-upgrade-boot.md#java-8--11)
+- [Java 11 → 17](DEMO-1-upgrade-boot.md#java-11--17)
+- [Spring Boot 2.7 → 4.0 (multiple steps)](DEMO-1-upgrade-boot.md#spring-boot-27--40-multiple-steps)
+
+Repeat until `advisor upgrade-plan get` shows no further steps:
+
+```bash
+advisor build-config get && advisor upgrade-plan apply
+git diff
+./mvnw spring-javaformat:apply   # if format validation fails
+sdk use java 17.0.13-tem
+./mvnw test
+git add -A && git commit -m "Apply next upgrade step"
+```
+
+### (d) Verify
 
 ```bash
 sdk use java 17.0.13-tem
